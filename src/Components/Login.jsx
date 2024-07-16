@@ -6,10 +6,10 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../utils/Firebase";
-import { useNavigate } from "react-router-dom";
+
 function Login() {
   const [val, setVal] = useState(true);
-  const navigate = useNavigate();
+
   const email = useRef(null);
   const password = useRef(null);
   const name = useRef(null);
@@ -31,15 +31,13 @@ function Login() {
           .then((userCredential) => {
             // Signed up
             const user = userCredential.user;
-            console.log(user);
-            navigate("/Browse");
+
             // ...
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             setMsg(errorCode + " - " + errorMessage);
-            navigate("/Browse");
           });
       } else {
         //sign In
@@ -51,14 +49,13 @@ function Login() {
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            navigate("/Browse");
+
             // ...
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             setMsg(errorCode + " - " + errorMessage);
-            navigate("/Browse");
           });
       }
     }

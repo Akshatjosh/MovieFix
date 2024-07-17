@@ -11,14 +11,11 @@ function Secondary() {
         <div className="-mt-5 relative sm:-mt-2">
           <MovieList title={"Now Playing"} movies={movies.NowplayingMovies} />
 
-          <MovieList title={"Trending"} movies={movies.NowplayingMovies} />
+          <MovieList title={"Top Rated"} movies={movies.topRatedMovie} />
 
           <MovieList title={"Popular"} movies={movies.popularMovie} />
 
-          <MovieList
-            title={"Upcoming Movies"}
-            movies={movies.NowplayingMovies}
-          />
+          <MovieList title={"Upcoming Movies"} movies={movies.upcomingMovie} />
         </div>
       </div>
     </div>

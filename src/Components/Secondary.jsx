@@ -7,8 +7,8 @@ function Secondary() {
   return (
     <div className="bg-black">
       {/* Movie Lists */}
-      <div className="px-4 md:px-12 lg:px-20 xl:px-32">
-        <div className="-mt-5 relative sm:-mt-2">
+      <div className="px-4 ">
+        <div className="-mt-32 relative ">
           <MovieList title={"Now Playing"} movies={movies.NowplayingMovies} />
 
           <MovieList title={"Top Rated"} movies={movies.topRatedMovie} />

@@ -6,17 +6,22 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../utils/Firebase";
+import { useSelector } from "react-redux";
+import languageData from "../utils/Language";
 
 function Login() {
+  const languageSelect = useSelector((store) => store.config?.lang);
   const [val, setVal] = useState(true);
 
   const email = useRef(null);
   const password = useRef(null);
   const name = useRef(null);
   const [msg, setMsg] = useState("");
+
+  const language = languageData[languageSelect] || languageData.en;
+
   const handleClick = () => {
     //Validate form
-
     const message = checkValidate(email.current.value, password.current.value);
 
     setMsg(message);
@@ -31,7 +36,6 @@ function Login() {
           .then((userCredential) => {
             // Signed up
             const user = userCredential.user;
-
             // ...
           })
           .catch((error) => {
@@ -49,7 +53,6 @@ function Login() {
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-
             // ...
           })
           .catch((error) => {
@@ -60,6 +63,7 @@ function Login() {
       }
     }
   };
+
   const handleSign = () => {
     setVal(!val);
   };
@@ -75,7 +79,7 @@ function Login() {
         />
         <div className="relative bg-black bg-opacity-80 p-6 rounded-lg shadow-lg w-96">
           <h1 className="text-white text-3xl font-bold mb-4">
-            {val ? "Sign IN" : "Sign UP"}
+            {val ? language.signIn : language.signUp}
           </h1>
           <form
             className="flex flex-col text-white"
@@ -87,49 +91,49 @@ function Login() {
               <input
                 type="text"
                 ref={name}
-                placeholder="Enter your Name"
+                placeholder={language["Enter your Name"]}
                 className="p-2 m-2 rounded-lg focus:outline-none bg-gray-600"
               />
             )}
             <input
               ref={email}
               type="text"
-              placeholder="Email Address"
+              placeholder={language["Email Address"]}
               className="p-2 m-2 rounded-lg focus:outline-none bg-gray-600"
             />
             <input
               ref={password}
               type="password"
-              placeholder="Password"
+              placeholder={language.Password}
               className="p-2 m-2 rounded-lg focus:outline-none bg-gray-600"
             />
             <button
               className="p-4 m-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:bg-red-700 focus:outline-none"
               onClick={handleClick}
             >
-              {val ? "Sign IN" : "Sign UP"}
+              {val ? language.signIn : language.signUp}
             </button>
             {msg == null ? "" : <strong className="text-red-500">{msg}</strong>}
 
             <p className="text-white text-xs mb-4">
               {val ? (
                 <>
-                  New to Netflix ?{" "}
+                  {language["New to Netflix ?"]}
                   <span
                     className="text-white font-bold text-md cursor-pointer"
                     onClick={handleSign}
                   >
-                    Sign Up
+                    {language.signUp}
                   </span>
                 </>
               ) : (
                 <>
-                  Already have an account{" "}
+                  {language["Already have an account"]}
                   <span
                     className="text-white font-bold text-md cursor-pointer"
                     onClick={handleSign}
                   >
-                    Sign In
+                    {language.signIn}
                   </span>
                 </>
               )}

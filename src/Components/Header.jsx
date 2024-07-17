@@ -4,8 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { addUser, removeUser } from "../utils/userslice";
+import { addtoggle } from "../utils/SearchSlice";
+import { languages } from "../utils/constant";
+import { changeLang } from "../utils/configSlice";
+import languageData from "../utils/Language";
 
 function Header() {
+  const languageSelect = useSelector((store) => store.config?.lang);
   const user = useSelector((store) => store.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -37,21 +42,63 @@ function Header() {
     });
     //unsubscribe when component unmounts
     return () => unsubscribe();
-  }, []);
+  }, [auth, dispatch, navigate]);
+
+  const handletoggle = () => {
+    dispatch(addtoggle());
+  };
+
+  const handleChangeLang = (e) => {
+    dispatch(changeLang(e.target.value));
+  };
+
+  const language = languageData[languageSelect] || languageData.en;
 
   return (
     <div className="fixed top-0 left-0 right-0 px-4 md:px-8 py-2 md:py-4 bg-gradient-to-b from-black z-10 flex justify-between items-center">
       <h1 className="text-3xl md:text-5xl lg:text-6xl text-red-600 font-bold">
-        NETFIX
+        {language.Netfix}
       </h1>
       <div>
-        {user && (
-          <button
-            onClick={handleSignOut}
-            className="px-3 md:px-4 py-1 md:py-2 bg-red-500 text-white font-bold text-sm md:text-base"
+        {user ? (
+          <div className="flex gap-2">
+            <select
+              className="p-2 m-2 bg-red-800 text-white"
+              onChange={handleChangeLang}
+              value={languageSelect}
+            >
+              {languages.map((lang) => (
+                <option key={lang.identifier} value={lang.identifier}>
+                  {lang.name}
+                </option>
+              ))}
+            </select>
+
+            <button
+              onClick={handletoggle}
+              className="px-3 rounded-lg md:px-4 py-1 md:py-2 bg-red-500 text-white font-bold text-sm md:text-base"
+            >
+              {language["Search Your Movie Here 🔎"]}
+            </button>
+            <button
+              onClick={handleSignOut}
+              className="px-3 rounded-lg md:px-4 py-1 md:py-2 bg-red-500 text-white font-bold text-sm md:text-base"
+            >
+              {language.signOut}
+            </button>
+          </div>
+        ) : (
+          <select
+            className="p-2 m-2 bg-red-800 text-white"
+            onChange={handleChangeLang}
+            value={languageSelect}
           >
-            SIGN OUT
-          </button>
+            {languages.map((lang) => (
+              <option key={lang.identifier} value={lang.identifier}>
+                {lang.name}
+              </option>
+            ))}
+          </select>
         )}
       </div>
     </div>

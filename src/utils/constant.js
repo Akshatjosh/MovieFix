@@ -7,3 +7,10 @@ export const API_options = {
   },
 };
 export const IMG_URL = "https://image.tmdb.org/t/p/w780";
+export const languages = [
+  { identifier: "en", name: "English" },
+  { identifier: "hindi", name: "Hindi" },
+  { identifier: "spanish", name: "Spanish" },
+  { identifier: "japanese", name: "Japanese" },
+  { identifier: "french", name: "French" },
+];

@@ -8,10 +8,11 @@ function Secondary() {
   const language = languageData[languageSelect] || languageData.en;
 
   return (
-    <div className="bg-black">
-      {/* Movie Lists */}
-      <div className="px-4 ">
-        <div className="-mt-32 relative ">
+    <>
+      <div className="bg-black relative z-0">
+        {/* Movie Lists */}
+
+        <div className="mt-0 md:-mt-64 pl-12 ">
           <MovieList
             title={language.nowPlaying}
             movies={movies.NowplayingMovies}
@@ -27,7 +28,7 @@ function Secondary() {
           />
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

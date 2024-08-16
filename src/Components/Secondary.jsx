@@ -8,27 +8,20 @@ function Secondary() {
   const language = languageData[languageSelect] || languageData.en;
 
   return (
-    <>
-      <div className="bg-black relative z-0">
-        {/* Movie Lists */}
-
-        <div className="mt-0 md:-mt-64 pl-12 ">
-          <MovieList
-            title={language.nowPlaying}
-            movies={movies.NowplayingMovies}
-          />
-
-          <MovieList title={language.topRated} movies={movies.topRatedMovie} />
-
-          <MovieList title={language.popular} movies={movies.popularMovie} />
-
-          <MovieList
-            title={language.upcomingMovie}
-            movies={movies.upcomingMovie}
-          />
-        </div>
+    <div className="bg-black relative z-0">
+      <div className="mt-0 md:-mt-64 pl-12">
+        <MovieList
+          title={language.nowPlaying}
+          movies={movies.NowplayingMovies}
+        />
+        <MovieList title={language.topRated} movies={movies.topRatedMovie} />
+        <MovieList title={language.popular} movies={movies.popularMovie} />
+        <MovieList
+          title={language.upcomingMovie}
+          movies={movies.upcomingMovie}
+        />
       </div>
-    </>
+    </div>
   );
 }
 

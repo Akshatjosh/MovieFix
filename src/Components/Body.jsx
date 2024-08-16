@@ -6,6 +6,7 @@ import { auth } from "../utils/Firebase";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../utils/userslice";
+import MovieDetail from "./MovieDetail";
 function Body() {
   const dispatch = useDispatch();
 
@@ -14,6 +15,7 @@ function Body() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/Browse" element={<Browse />} />
+        <Route path="/movie/:movieId" element={<MovieDetail />} />
       </Routes>
     </div>
   );

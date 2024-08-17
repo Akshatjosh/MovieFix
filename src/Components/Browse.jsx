@@ -14,7 +14,7 @@ function Browse() {
   useTopRatedMovie();
   useUpcomingMovie();
   return (
-    <div>
+    <div className="overflow-hidden">
       <Header />
 
       <MainContainer />

@@ -16,6 +16,7 @@ function MovieDetail() {
   const [similarMovies, setSimilarMovies] = useState([]);
   const [trailer, setTrailer] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [loadingTrailer, setLoadingTrailer] = useState(true); // Add loading state for trailer
 
   const nowPlaying = movies.NowplayingMovies || [];
   const topRated = movies.topRatedMovie || [];
@@ -64,6 +65,7 @@ function MovieDetail() {
         (video) => video.type === "Trailer"
       );
       setTrailer(trailerVideo);
+      setLoadingTrailer(false); // Set loading to false after fetching
     };
 
     fetchSimilarMovies();
@@ -126,7 +128,9 @@ function MovieDetail() {
                 <StarRating rating={selectedMovie.vote_average} />
               </div>
 
-              {trailer ? (
+              {loadingTrailer ? (
+                <div className="shimmer w-full h-80 mb-6"></div> // Apply shimmer effect while loading
+              ) : trailer ? (
                 <div className="mb-6">
                   <h2 className="text-xl sm:text-2xl font-semibold mb-4">
                     Watch Trailer

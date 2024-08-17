@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { IMG_URL, API_options } from "../utils/constant";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
-import StarRating from "./StarRating"; // Import the StarRating component
+import StarRating from "./StarRating";
+import { IoArrowBack } from "react-icons/io5"; // Import arrow icon
 
-// Placeholder image URL
 const PLACEHOLDER_IMAGE =
   "https://via.placeholder.com/300x450?text=No+Image+Available";
 
@@ -17,14 +17,12 @@ function MovieDetail() {
   const [trailer, setTrailer] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
 
-  // Safely access movie arrays and default to empty arrays if undefined or null
   const nowPlaying = movies.NowplayingMovies || [];
   const topRated = movies.topRatedMovie || [];
   const popular = movies.popularMovie || [];
   const upcoming = movies.upcomingMovie || [];
 
   useEffect(() => {
-    // Find the movie in the Redux store or fetch it from the API if not found
     const movieFromStore = [
       ...nowPlaying,
       ...topRated,
@@ -35,7 +33,6 @@ function MovieDetail() {
     if (movieFromStore) {
       setSelectedMovie(movieFromStore);
     } else {
-      // Fetch movie details from the API if not found in the store
       const fetchMovieDetails = async () => {
         const response = await fetch(
           `https://api.themoviedb.org/3/movie/${movieId}`,
@@ -48,7 +45,6 @@ function MovieDetail() {
       fetchMovieDetails();
     }
 
-    // Fetch similar movies and trailer
     const fetchSimilarMovies = async () => {
       const response = await fetch(
         `https://api.themoviedb.org/3/movie/${movieId}/similar`,
@@ -74,12 +70,36 @@ function MovieDetail() {
     fetchTrailer();
   }, [movieId, nowPlaying, topRated, popular, upcoming]);
 
+  useEffect(() => {
+    if (selectedMovie) {
+      const titleInterval = setInterval(() => {
+        document.title =
+          document.title === `${selectedMovie.title}`
+            ? "Netfix"
+            : `${selectedMovie.title} `;
+      }, 2000); // Toggle every 2 seconds
+
+      return () => clearInterval(titleInterval); // Clear interval on component unmount
+    }
+  }, [selectedMovie]);
+
   const handleViewDetails = (id) => {
     navigate(`/movie/${id}`);
   };
 
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="p-4 sm:p-6 bg-gray-900 text-white min-h-screen">
+      <button
+        onClick={handleBackClick}
+        className="mb-4 px-4 py-2 flex items-center bg-white text-black rounded-md shadow-md"
+      >
+        <IoArrowBack className="mr-2" /> Back
+      </button>
+
       {selectedMovie ? (
         <>
           <div className="flex flex-col md:flex-row md:space-x-6 mb-8">
@@ -133,34 +153,40 @@ function MovieDetail() {
             Similar Movies
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
-            {similarMovies.map((movie) => (
-              <div
-                key={movie.id}
-                className="relative group bg-gray-800 rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
-                onClick={() => handleViewDetails(movie.id)}
-              >
-                <img
-                  src={
-                    movie.poster_path
-                      ? IMG_URL + movie.poster_path
-                      : PLACEHOLDER_IMAGE
-                  }
-                  alt={movie.title}
-                  className="w-full h-auto object-cover transition-opacity duration-300 group-hover:opacity-75"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer p-4">
-                  <h3 className="text-sm sm:text-lg font-bold text-white text-center">
-                    {movie.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-300 mt-1">
-                    {movie.release_date?.substring(0, 4)}
-                  </p>
-                  <button className="mt-2 px-4 py-2 bg-red-600 text-white font-semibold rounded-md shadow-lg transition-transform transform hover:scale-110">
-                    View Details
-                  </button>
+            {similarMovies ? (
+              similarMovies.map((movie) => (
+                <div
+                  key={movie.id}
+                  className="relative group bg-gray-800 rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                  onClick={() => handleViewDetails(movie.id)}
+                >
+                  <img
+                    src={
+                      movie.poster_path
+                        ? IMG_URL + movie.poster_path
+                        : PLACEHOLDER_IMAGE
+                    }
+                    alt={movie.title}
+                    className="w-full h-auto object-cover transition-opacity duration-300 group-hover:opacity-75"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer p-4">
+                    <h3 className="text-sm sm:text-lg font-bold text-white text-center">
+                      {movie.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-300 mt-1">
+                      {movie.release_date?.substring(0, 4)}
+                    </p>
+                    <button className="mt-2 px-4 py-2 bg-red-600 text-white font-semibold rounded-md shadow-lg transition-transform transform hover:scale-110">
+                      View Details
+                    </button>
+                  </div>
                 </div>
+              ))
+            ) : (
+              <div className="mb-6 text-center">
+                <p className="text-gray-400">No Similar Movie Found</p>
               </div>
-            ))}
+            )}
           </div>
         </>
       ) : (

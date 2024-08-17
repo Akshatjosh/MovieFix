@@ -53,7 +53,7 @@ function Header() {
   return (
     <div className="fixed z-10 top-0 left-0 right-0 px-4 md:px-8 py-2 md:py-4 bg-gradient-to-b from-black  flex justify-between items-center">
       <h1 className="text-3xl md:text-5xl lg:text-6xl text-red-600 font-bold">
-        {language.Netfix}
+        {language.MovieFix}
       </h1>
       <div>
         {user ? (

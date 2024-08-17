@@ -77,7 +77,7 @@ function MovieDetail() {
       const titleInterval = setInterval(() => {
         document.title =
           document.title === `${selectedMovie.title}`
-            ? "Netfix"
+            ? "MovieFix"
             : `${selectedMovie.title} `;
       }, 2000); // Toggle every 2 seconds
 

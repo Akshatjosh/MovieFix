@@ -4,12 +4,11 @@ const userSlice = createSlice({
   name: "user",
   initialState: null,
   reducers: {
-    // Corrected property name
     addUser: (state, action) => {
-      return action.payload;
+      return action.payload; // Save the entire user object
     },
-    removeUser: (state, action) => {
-      return null;
+    removeUser: () => {
+      return null; // Clear the user object
     },
   },
 });

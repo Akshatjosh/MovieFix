@@ -1,6 +1,6 @@
 [build]
-  publish = "public" # Replace with your actual build output directory
-  command = "npm run build" # Replace with your actual build command
+  publish = "dist"
+  command = "vite build" # or your build command, e.g., "npm run build"
 
 [[redirects]]
   from = "/*"

@@ -12,24 +12,20 @@ import SplashScreen from "./SplashScreen"; // Import the SplashScreen component
 
 function Login() {
   const languageSelect = useSelector((store) => store.config?.lang);
-  const [val, setVal] = useState(true);
+  const language = languageData[languageSelect] || languageData.en;
+  const [isSignIn, setIsSignIn] = useState(true);
   const [showSplash, setShowSplash] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Track authentication status
+  const [msg, setMsg] = useState("");
 
   const email = useRef(null);
   const password = useRef(null);
   const name = useRef(null);
-  const [msg, setMsg] = useState("");
-
-  const language = languageData[languageSelect] || languageData.en;
 
   useEffect(() => {
     // Check authentication status and set the splash screen visibility
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
+        setShowSplash(false); // Hide splash screen if user is authenticated
       }
     });
 
@@ -40,38 +36,34 @@ function Login() {
     const message = checkValidate(email.current.value, password.current.value);
     setMsg(message);
 
-    if (message == null) {
+    if (!message) {
       setShowSplash(true); // Show splash screen during authentication
 
-      const authPromise = !val
-        ? createUserWithEmailAndPassword(
+      const authPromise = isSignIn
+        ? signInWithEmailAndPassword(
             auth,
             email.current.value,
             password.current.value
           )
-        : signInWithEmailAndPassword(
+        : createUserWithEmailAndPassword(
             auth,
             email.current.value,
             password.current.value
           );
 
       authPromise
-        .then((userCredential) => {
-          const user = userCredential.user;
-          // Handle post-authentication logic
+        .then(() => {
           setShowSplash(false); // Hide splash screen after authentication
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setMsg(`${errorCode} - ${errorMessage}`);
+          setMsg(`${error.code} - ${error.message}`);
           setShowSplash(false); // Hide splash screen if there's an error
         });
     }
   };
 
   const handleSign = () => {
-    setVal(!val);
+    setIsSignIn(!isSignIn);
   };
 
   return (
@@ -88,15 +80,13 @@ function Login() {
           />
           <div className="relative bg-black bg-opacity-80 p-6 rounded-lg shadow-lg w-96">
             <h1 className="text-white text-3xl font-bold mb-4">
-              {val ? language.signIn : language.signUp}
+              {isSignIn ? language.signIn : language.signUp}
             </h1>
             <form
               className="flex flex-col text-white"
               onSubmit={(e) => e.preventDefault()}
             >
-              {val ? (
-                ""
-              ) : (
+              {!isSignIn && (
                 <input
                   type="text"
                   ref={name}
@@ -120,15 +110,11 @@ function Login() {
                 className="p-4 m-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:bg-red-700 focus:outline-none"
                 onClick={handleClick}
               >
-                {val ? language.signIn : language.signUp}
+                {isSignIn ? language.signIn : language.signUp}
               </button>
-              {msg === "" ? (
-                ""
-              ) : (
-                <strong className="text-red-500">{msg}</strong>
-              )}
+              {msg && <strong className="text-red-500">{msg}</strong>}
               <p className="text-white text-xs mb-4">
-                {val ? (
+                {isSignIn ? (
                   <>
                     {language["New to MovieFix ?"]}
                     <span

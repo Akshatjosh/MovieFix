@@ -1,9 +1,19 @@
+# Netlify build settings
 [build]
+  # Directory to publish after build
   publish = "dist"
-  command = "vite build" # or your build command, e.g., "npm run build"
+  
+  # Command to build the project
+  command = "vite build"
 
+# Redirects configuration
 [[redirects]]
+  # Redirect all routes to the main index.html
   from = "/*"
   to = "/index.html"
+  
+  # Status code for the redirect
   status = 200
+  
+  # Force the redirect rule to apply
   force = true

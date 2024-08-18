@@ -1,4 +1,9 @@
+[build]
+  publish = "public" # Replace with your actual build output directory
+  command = "npm run build" # Replace with your actual build command
+
 [[redirects]]
-from="/*"
-to="/index.html"
-status=200
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
